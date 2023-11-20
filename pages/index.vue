@@ -1,11 +1,13 @@
 <template>
-  <div>
-    OBS connected: {{ obs.identified }}
-  </div>
-  <div>
-    <input v-model="myText1" type="text">
-    <input v-model="myText2" type="text">
-  </div>
+  <v-container>
+    <v-alert class="mb-4" :color="obs.identified ? 'success' : 'error'">
+      OBS connected: {{ obs.identified }}
+    </v-alert>
+    <div>
+      <v-text-field v-model="myText1" type="text" />
+      <v-text-field v-model="myText2" type="text" />
+    </div>
+  </v-container>
 </template>
 
 <script lang="ts" setup>

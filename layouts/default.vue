@@ -1,7 +1,9 @@
 <template>
-    <slot />
+  <v-app>
+    <nuxt-page />
+  </v-app>
 </template>
 
 <style lang="scss">
-    @import "../assets/style/global";
+  @import "../assets/style/global";
 </style>
