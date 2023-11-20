@@ -3,5 +3,5 @@
 </template>
 
 <style lang="scss">
-    @import "style/index";
+    @import "../assets/style/global";
 </style>
