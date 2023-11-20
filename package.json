@@ -13,5 +13,9 @@
     "@nuxt/devtools": "latest",
     "nuxt": "^3.8.1",
     "sass": "^1.69.5"
+  },
+  "dependencies": {
+    "modern-normalize": "^2.0.0",
+    "obs-websocket-js": "^5.0.3"
   }
 }
