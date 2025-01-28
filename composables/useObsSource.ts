@@ -1,16 +1,16 @@
 import {useObs} from '~/composables/useObs'
-import {toValue} from '@vue/reactivity'
-import type {JsonValue} from 'type-fest'
-import type {UnwrapRef} from 'vue'
+import type {JsonObject} from 'type-fest'
 
-export const useObsInputValue = <T extends JsonValue>(inputName: string, inputSettingsKey: string, defaultValue: T, readInitialValueFromObs: boolean = false) => {
+export const useObsSource = (inputName: string) => {
+
     const obs = useObs()
-    const valueRef = ref<T>(toValue(defaultValue))
+
     let initialReadDone = false
+    let valueRef = ref('')
 
     async function readValueFromObs() {
-        const currentValue = (await obs.value.call('GetInputSettings', {inputName})).inputSettings[inputSettingsKey]
-        valueRef.value = currentValue as unknown as UnwrapRef<T>
+        const currentValue = (await obs.value.call('GetInputSettings', {inputName})).inputSettings.text
+        valueRef.value = currentValue as string
     }
 
     async function writeValueToObs() {
@@ -18,7 +18,7 @@ export const useObsInputValue = <T extends JsonValue>(inputName: string, inputSe
             inputName,
             inputSettings: {
                 // @ts-ignore
-                [inputSettingsKey]: valueRef.value,
+                ['text']: valueRef.value,
             },
             overlay: true,
         })
@@ -26,11 +26,10 @@ export const useObsInputValue = <T extends JsonValue>(inputName: string, inputSe
 
     watch(() => obs.value.identified, async () => {
       if (obs.value.identified) {
-          if (readInitialValueFromObs && !initialReadDone) {
+          if (!initialReadDone) {
               await readValueFromObs()
               initialReadDone = true
           }
-
           await writeValueToObs()
       } else {
           initialReadDone = false
